@@ -28,5 +28,9 @@ public class GuardedParking implements Printf{
     }
     @Override
     public void print() {
+        System.out.println();
+        System.out.println("     ****************************************");
+        System.out.println("     *              MENU CLIENT             *");
+        System.out.println("     ****************************************");
     }
 }
