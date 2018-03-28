@@ -1,3 +1,5 @@
+import Interface.Printf;
+
 public class PersonalCar extends Car implements Printf {
     @Override
     public void park() {

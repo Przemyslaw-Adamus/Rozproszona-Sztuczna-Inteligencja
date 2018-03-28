@@ -1,6 +1,9 @@
+import Exceptions.ExceptionBadInput;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Menu {
 
@@ -35,12 +38,16 @@ public class Menu {
                     e.printStackTrace();
                 }
             }
-            if (!makeChoice(choice))
-                break;
+            try {
+                if (!makeChoice(choice))
+                    break;
+            } catch (ExceptionBadInput exceptionBadInput) {
+                exceptionBadInput.printStackTrace();
+            }
         }
     }
 
-    public boolean makeChoice(int choice) {
+    public boolean makeChoice(int choice) throws ExceptionBadInput {
         try {
             switch (choice) {
                 case 1:
@@ -59,25 +66,15 @@ public class Menu {
                         System.out.println("     6. SHOW CLIENT's CARS");
                         System.out.println("     0. BACK");
                         System.out.print("     Choose one of options > ");
-                        try {
+
                             choiceMenageClient = s2.nextInt();
-                        } catch (InputMismatchException err) {
-                            System.out.println("It's not a number! Press ENTER to continue.");
-                            try {
-                                System.in.read();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                            if(choiceMenageClient<0 || choiceMenageClient>6)throw new ExceptionBadInput();
+
                         if (!makeChoiceMenageClient(choiceMenageClient))
                             break;
                     }
                     break;
                 case 2:
-                    System.out.println();
-                    System.out.println("     ****************************************");
-                    System.out.println("     *              MENU PARKING             *");
-                    System.out.println("     ****************************************");
                     guardedParking.print();
                     break;
                 case 3:
@@ -96,7 +93,7 @@ public class Menu {
     }
 
     public boolean makeChoiceMenageClient(int choice) {
-        Scanner scaner = new Scanner(System.in);
+        Scanner  scaner = new Scanner(System.in);
         int clientIndex=0;
         int carIndex=0;
         try {

@@ -1,6 +1,8 @@
+import Interface.Printf;
+
 import java.util.*;
 
-public class GuardedParking implements Printf{
+public class GuardedParking implements Printf {
     List<ParkingSpace> listParkingSpaces;
     List<Client> listClient;
     Map<String, Double> pricePerHour;
@@ -30,7 +32,7 @@ public class GuardedParking implements Printf{
     public void print() {
         System.out.println();
         System.out.println("     ****************************************");
-        System.out.println("     *              MENU CLIENT             *");
+        System.out.println("     *              PARKING                 *");
         System.out.println("     ****************************************");
     }
 }

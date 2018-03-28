@@ -1,3 +1,5 @@
+import Interface.Printf;
+
 public class Bus extends Car implements Printf {
 
     @Override

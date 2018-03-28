@@ -1,6 +1,8 @@
+import Interface.Printf;
+
 public abstract class Car implements Printf {
-    int id;
-    int owner;
+    public int id;
+    public int owner;
     ParkingSpace parkingSpace;
     public abstract void park();
     public abstract void driveOut();
