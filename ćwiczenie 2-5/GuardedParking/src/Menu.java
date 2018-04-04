@@ -1,9 +1,9 @@
+
 import Exceptions.ExceptionBadInput;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 public class Menu {
 
@@ -12,7 +12,11 @@ public class Menu {
 
     public Menu() {
         scanner = new Scanner(System.in);
-        guardedParking = new GuardedParking();
+        try {
+            guardedParking = new GuardedParking();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void show() {
@@ -58,17 +62,20 @@ public class Menu {
                         System.out.println("     ****************************************");
                         System.out.println("     *              MENU CLIENT             *");
                         System.out.println("     ****************************************");
-                        System.out.println("     1. ADD NEW CLIENT");
-                        System.out.println("     2. DELETE CLIENT");
-                        System.out.println("     3. SHOW LIST CLIENTS");
-                        System.out.println("     4. ADD CLIENT's CARS");
-                        System.out.println("     5. DELETE CLIENT's CARS");
-                        System.out.println("     6. SHOW CLIENT's CARS");
+                        System.out.println("     1.  ADD NEW CLIENT");
+                        System.out.println("     2.  DELETE CLIENT");
+                        System.out.println("     3.  SHOW LIST CLIENTS");
+                        System.out.println("     4.  ADD CLIENT's CARS");
+                        System.out.println("     5.  DELETE CLIENT's CARS");
+                        System.out.println("     6.  SHOW CLIENT's CARS");
+                        System.out.println("     7.  SAVE TO FILE LIST CLIENTS");
+                        System.out.println("     8.  LOAD FROM FILE LIST CLIENTS");
+                        System.out.println("     9.  SERIALIZE CLIENT");
                         System.out.println("     0. BACK");
                         System.out.print("     Choose one of options > ");
 
                             choiceMenageClient = s2.nextInt();
-                            if(choiceMenageClient<0 || choiceMenageClient>6)throw new ExceptionBadInput();
+                            if(choiceMenageClient<0 || choiceMenageClient>10)throw new ExceptionBadInput();
 
                         if (!makeChoiceMenageClient(choiceMenageClient))
                             break;
@@ -153,6 +160,36 @@ public class Menu {
                         guardedParking.listClient.get(indexxx).listCars.get(i).print();
                     }
                     break;
+                case 7:
+                    try {
+                        saveListClients();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 8:
+                    try {
+                        loadListClients();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case 9:
+                    Serialize serialize=new Serialize();
+                    System.out.print("Give the index of the client >");
+                    clientIndex = scaner.nextInt();
+                    if(clientIndex>=0 && clientIndex<guardedParking.listClient.size()) {
+                        try {
+                            serialize.serialize(guardedParking.listClient.get(clientIndex));
+                        } catch (NotSerializableException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        System.out.println("You give the wrong index");
+                    }
+                    break;
                 case 0:
                     return false;
                 default:
@@ -163,6 +200,42 @@ public class Menu {
             System.out.println("You have to put a number!");
             return false;
         }
+    }
+
+    private void loadListClients() throws FileNotFoundException {
+        Scanner load = new Scanner(new File("ListClientsLoad.txt"));
+        String  rekord=load.nextLine();;
+        Client tmpClient = new Client(0);
+
+        while (load.hasNext()){
+            rekord=load.nextLine();
+            tmpClient.id=Integer.parseInt(rekord);
+            rekord=load.nextLine();
+            while(rekord!="_")
+                tmpClient.listCars.add(new PersonalCar(Integer.parseInt(rekord),tmpClient.id));
+
+            guardedParking.listClient.set(tmpClient.id,tmpClient);
+            tmpClient=new Client(0);
+        }
+        System.out.println("The list has been loaded");
+
+    }
+
+    private void saveListClients() throws FileNotFoundException {
+
+        PrintWriter save = new PrintWriter("ListClients.txt");
+        //if()throw  new FileNotFoundException();
+        for(int i=0;i<guardedParking.listClient.size();i++)
+        {
+            save.println("________________");
+            save.println("Client ID: "+i);
+            for(int j=0;j<guardedParking.listClient.get(i).listCars.size();j++)
+            {
+                save.println("Car ID: " +guardedParking.listClient.get(i).listCars.get(j).id);
+            }
+        }
+        save.close();
+        System.out.println("The list has been saved");
     }
 
     private void showListCars() {

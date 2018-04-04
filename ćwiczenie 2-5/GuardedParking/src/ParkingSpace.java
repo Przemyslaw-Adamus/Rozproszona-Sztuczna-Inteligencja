@@ -1,3 +1,5 @@
+
+
 public class ParkingSpace {
     char lane;
     int number;
