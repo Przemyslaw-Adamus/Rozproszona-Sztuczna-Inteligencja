@@ -1,4 +1,16 @@
 ________________
 Client ID: 0
+Car ID: 0
+Car ID: 1
 ________________
 Client ID: 1
+________________
+Client ID: 2
+Car ID: 0
+Car ID: 1
+Car ID: 2
+Car ID: 3
+________________
+Client ID: 3
+Car ID: 0
+Car ID: 1

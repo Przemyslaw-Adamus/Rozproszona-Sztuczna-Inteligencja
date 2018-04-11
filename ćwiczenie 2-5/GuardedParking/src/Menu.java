@@ -28,8 +28,8 @@ public class Menu {
             System.out.println("     *                 MENU                 *");
             System.out.println("     ****************************************");
             System.out.println("     1. MENAGE CLIENT");
-            System.out.println("     2. MENAGE PARKING");
-            System.out.println("     3. SHOW LIST CARS");
+            //System.out.println("     2. MENAGE PARKING");
+            System.out.println("     2. SHOW PARKING");
             System.out.println("     0. EXIT");
             System.out.print("     Choose one of options > ");
             try {
@@ -81,10 +81,10 @@ public class Menu {
                             break;
                     }
                     break;
-                case 2:
+                case 3:
                     guardedParking.print();
                     break;
-                case 3:
+                case 2:
                     showListCars();
                     break;
                 case 0:
@@ -168,11 +168,7 @@ public class Menu {
                     }
                     break;
                 case 8:
-                    try {
                         loadListClients();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
 
                     break;
                 case 9:
@@ -180,11 +176,7 @@ public class Menu {
                     System.out.print("Give the index of the client >");
                     clientIndex = scaner.nextInt();
                     if(clientIndex>=0 && clientIndex<guardedParking.listClient.size()) {
-                        try {
                             serialize.serialize(guardedParking.listClient.get(clientIndex));
-                        } catch (NotSerializableException e) {
-                            e.printStackTrace();
-                        }
                     }
                     else{
                         System.out.println("You give the wrong index");
@@ -202,19 +194,28 @@ public class Menu {
         }
     }
 
-    private void loadListClients() throws FileNotFoundException {
-        Scanner load = new Scanner(new File("ListClientsLoad.txt"));
-        String  rekord=load.nextLine();;
+    private void loadListClients() {
+        Scanner load = null;
+        try {
+            load = new Scanner(new File("ListClientsLoad.txt"));
+        } catch (FileNotFoundException e) {
+        }
+        String  rekord;
+        rekord=load.nextLine();
+       // System.out.println(rekord);
         Client tmpClient = new Client(0);
-
         while (load.hasNext()){
             rekord=load.nextLine();
-            tmpClient.id=Integer.parseInt(rekord);
+        //System.out.println(rekord);
+        tmpClient.id=Integer.parseInt(rekord);
             rekord=load.nextLine();
-            while(rekord!="_")
-                tmpClient.listCars.add(new PersonalCar(Integer.parseInt(rekord),tmpClient.id));
-
-            guardedParking.listClient.set(tmpClient.id,tmpClient);
+           // System.out.println(rekord);
+            while(!rekord.equals(";")) {
+                tmpClient.listCars.add(new PersonalCar(Integer.parseInt(rekord), tmpClient.id));
+                rekord=load.nextLine();
+                tmpClient.print();
+            }
+            guardedParking.listClient.add(tmpClient.id,tmpClient);
             tmpClient=new Client(0);
         }
         System.out.println("The list has been loaded");
