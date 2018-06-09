@@ -13,6 +13,6 @@ public class klasa_3 extends Agent{
 			}
 		});
 		System.out.println("Zaraz sie usune");
-		//doDelete();
+		doDelete();
 	}
 }

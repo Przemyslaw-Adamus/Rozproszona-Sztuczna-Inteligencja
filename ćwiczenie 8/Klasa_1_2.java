@@ -4,7 +4,6 @@ import jade.core.behaviours.OneShotBehaviour;
 
 public class Klasa_1_2 extends Agent{
 
-	//nazwy stan�w
 	private static final String STATE_A = "A";
 	private static final String STATE_B = "B";
 	private static final String STATE_C = "C";

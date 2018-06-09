@@ -1,1 +1,1 @@
-http://192.168.0.95:7778/acc
+http://LAPTOP-V5S53PEB:7778/acc
